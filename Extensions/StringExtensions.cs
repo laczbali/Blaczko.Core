@@ -4,6 +4,8 @@ namespace Blaczko.Core.Extensions
 {
 	public static class StringExtensions
 	{
+		public static string Testing { get; set; }
+
 		/// <summary>
 		/// Returns true if the string is null or all whitespaces, returns false otherwise
 		/// </summary>
