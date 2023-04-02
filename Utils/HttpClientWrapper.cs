@@ -36,7 +36,8 @@ namespace Blaczko.Core.Wrappers
 			HttpMethod method,
 			HttpContent content)
 		{
-			return (await MakeRequestAsync(url, method, content)).DeserializeResponse<ResponseType>();
+			var rawResponse = await MakeRequestAsync(url, method, content);
+			return rawResponse.DeserializeResponse<ResponseType>();
 		}
 
 		/// <inheritdoc cref="MakeRequestAsync(string, HttpMethod, HttpContent)"/>
@@ -63,7 +64,8 @@ namespace Blaczko.Core.Wrappers
 			string authScheme,
 			string authValue)
 		{
-			return (await MakeRequestAsync(url, method, content, authScheme, authValue)).DeserializeResponse<ResponseType>();
+			var rawResponse = await MakeRequestAsync(url, method, content, authScheme, authValue);
+			return rawResponse.DeserializeResponse<ResponseType>();
 		}
 
 		/// <summary>
