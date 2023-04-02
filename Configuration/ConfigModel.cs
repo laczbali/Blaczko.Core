@@ -3,16 +3,8 @@
 	public abstract class ConfigModel
 	{
 		/// <summary>
-		/// Custom init action
+		/// Custom init action, it will be called after configuration is binded
 		/// </summary>
 		public virtual void Init() { }
-
-		/// <summary>
-		/// Make sure that we have all the required fields
-		/// </summary>
-		internal void Validate()
-		{
-			// TODO: implement this
-		}
 	}
 }
