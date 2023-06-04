@@ -37,16 +37,22 @@ namespace Blaczko.Core.Utils
             }
         }
 
+        public static async Task UsingDbAsync(string dbPath, Func<SQLiteAsyncConnection, Task> action)
+        {
+            var db = await CreateConnectionAsync(dbPath);
+            try
+            {
+                await action(db);
+            }
+            finally
+            {
+                await db.CloseAsync();
+            }
+        }
+
         public static async Task ExecuteScriptAsync(this SQLiteAsyncConnection db, string script, List<List<object>> parameters = null)
         {
             var snippets = script.Split(";", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-            parameters = new List<List<object>>()
-            {
-                new List<object>{ "a", "b"},
-                null,
-                new List<object>{ "c", "d"},
-            };
 
             if (parameters != null)
             {
