@@ -1,8 +1,8 @@
 namespace Blaczko.Core.Utils
 {
-    public class FileSystemUtil
+    public static class FileSystemUtil
     {
-        public string EnsureDir(string path)
+        public static string EnsureDir(string path)
         {
             if (!Directory.Exists(path))
             {
