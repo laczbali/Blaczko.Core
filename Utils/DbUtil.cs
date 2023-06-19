@@ -2,8 +2,39 @@
 
 namespace Blaczko.Core.Utils
 {
-    public static class DbUtil
+    public class DbUtil
     {
+        public string DbFullPath { get; }
+
+        private AsyncLock dbLock = new AsyncLock();
+
+        public DbUtil(string dbFullPath)
+        {
+            DbFullPath = dbFullPath;
+        }
+
+        #region Instance methods
+
+        public async Task<TResult> SafeUsingDbAsync<TResult>(Func<SQLiteAsyncConnection, Task<TResult>> action)
+        {
+            using (await dbLock.LockAsync())
+            {
+                return await DbUtil.UsingDbAsync<TResult>(this.DbFullPath, action);
+            }
+        }
+
+        public async Task SafeUsingDbAsync(Func<SQLiteAsyncConnection, Task> action)
+        {
+            using (await dbLock.LockAsync())
+            {
+                await DbUtil.UsingDbAsync(this.DbFullPath, action);
+            }
+        }
+
+        #endregion
+
+        #region Static methods
+
         public static async Task<SQLiteAsyncConnection> CreateConnectionAsync(string dbFullPath)
         {
             FileSystemUtil.EnsureDir(Path.GetDirectoryName(dbFullPath));
@@ -50,32 +81,6 @@ namespace Blaczko.Core.Utils
             }
         }
 
-        public static async Task ExecuteScriptAsync(this SQLiteAsyncConnection db, string script, List<List<object>> parameters = null)
-        {
-            var snippets = script.Split(";", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
-            if (parameters != null)
-            {
-                if (snippets.Length != parameters.Count)
-                {
-                    throw new ArgumentException("Number of parameters must be equal to number of snippets.");
-                }
-            }
-
-            for (int i = 0; i < snippets.Length; i++)
-            {
-                var snippet = snippets[i];
-                var parameter = parameters?[i];
-
-                if (parameter is not null && parameter?.Count > 0)
-                {
-                    await db.ExecuteAsync(snippet, parameter.ToArray());
-                }
-                else
-                {
-                    await db.ExecuteAsync(snippet);
-                }
-            }
-        }
+        #endregion
     }
 }
