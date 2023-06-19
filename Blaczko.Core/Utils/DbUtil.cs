@@ -31,6 +31,34 @@ namespace Blaczko.Core.Utils
             }
         }
 
+        /// <summary>
+        /// Finds all classes with the SQLite.Table attribute in the provided namespace, and creates tables for them.
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateTables()
+        {
+
+        }
+
+        /// <summary>
+        /// Finds all classes that implement the Blaczko.Core.BaseClasses.ViewModel class in the provided namespace, and creates views for them.
+        /// </summary>
+        /// <returns></returns>
+        public async Task CreateViews()
+        {
+
+        }
+
+        /// <summary>
+        /// First, it creates the DB file. <br/>
+        /// Then it finds all Views and Tables in the provided namespace (and sub-namespaces), and creates them in the DB.
+        /// </summary>
+        /// <returns></returns>
+        public async Task InitDb()
+        {
+
+        }
+
         #endregion
 
         #region Static methods
