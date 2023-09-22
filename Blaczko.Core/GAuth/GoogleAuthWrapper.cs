@@ -2,6 +2,10 @@
 
 namespace Blaczko.Core.GAuth
 {
+    /// <summary>
+    /// Provides a helper for backend validation of Google Auth tokens <br/>
+    /// For getting the token see <see href="https://developers.google.com/identity/sign-in/web/sign-in"/>
+    /// </summary>
     public class GoogleAuthWrapper
     {
         private readonly GAuthConfig config;

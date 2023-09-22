@@ -14,6 +14,10 @@ Methods to handle files and directories.
 Simplifies the use of `HttpClient`.
 Register it as a singleton, and use one of the `MakeRequestAsync` methods.
 
+# Google Auth
+Provides a simple helper for backend validation of Google OAuth tokens.
+For the required forntend steps, see https://developers.google.com/identity/sign-in/web/sign-in
+
 # Configuration handling
 Use `AddServiceConfiguration` to register a a config model as a singleton.
 The model will be bound from the configuration.
