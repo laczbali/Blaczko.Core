@@ -1,9 +1,9 @@
-﻿namespace Blaczko.Core.BaseClasses
+﻿namespace Blaczko.Core.SQLiteDb
 {
-    public abstract class ViewModel
+    public abstract class ViewModelBase
     {
         [SQLite.Ignore]
-        public virtual string ViewName { get => $"{this.GetType().Name}s"; }
+        public virtual string ViewName { get => $"{GetType().Name}s"; }
 
         [SQLite.Ignore]
         public abstract string ViewScript { get; }

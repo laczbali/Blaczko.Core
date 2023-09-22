@@ -1,6 +1,7 @@
-﻿using SQLite;
+﻿using Blaczko.Core.Utils;
+using SQLite;
 
-namespace Blaczko.Core.Utils
+namespace Blaczko.Core.SQLiteDb
 {
     public class DbUtil
     {
@@ -13,13 +14,11 @@ namespace Blaczko.Core.Utils
             DbFullPath = dbFullPath;
         }
 
-        #region Instance methods
-
         public async Task<TResult> SafeUsingDbAsync<TResult>(Func<SQLiteAsyncConnection, Task<TResult>> action)
         {
             using (await dbLock.LockAsync())
             {
-                return await DbUtil.UsingDbAsync<TResult>(this.DbFullPath, action);
+                return await UsingDbAsync(DbFullPath, action);
             }
         }
 
@@ -27,7 +26,7 @@ namespace Blaczko.Core.Utils
         {
             using (await dbLock.LockAsync())
             {
-                await DbUtil.UsingDbAsync(this.DbFullPath, action);
+                await UsingDbAsync(DbFullPath, action);
             }
         }
 
@@ -35,34 +34,34 @@ namespace Blaczko.Core.Utils
         /// Finds all classes with the SQLite.Table attribute in the provided namespace, and creates tables for them.
         /// </summary>
         /// <returns></returns>
-        public async Task CreateTables()
-        {
+        //public async Task CreateTables()
+        //{
 
-        }
+        //}
 
         /// <summary>
         /// Finds all classes that implement the Blaczko.Core.BaseClasses.ViewModel class in the provided namespace, and creates views for them.
         /// </summary>
         /// <returns></returns>
-        public async Task CreateViews()
-        {
+        //public async Task CreateViews()
+        //{
 
-        }
+        //}
 
         /// <summary>
         /// First, it creates the DB file. <br/>
         /// Then it finds all Views and Tables in the provided namespace (and sub-namespaces), and creates them in the DB.
         /// </summary>
         /// <returns></returns>
-        public async Task InitDb()
-        {
+        //public async Task InitDb()
+        //{
 
-        }
+        //}
 
-        #endregion
-
-        #region Static methods
-
+        /// <summary>
+        /// If the DB file does not exist, the method will create it.
+        /// The synchronous and journal_mode settings are set to off and temp_store is set to memory
+        /// </summary>
         public static async Task<SQLiteAsyncConnection> CreateConnectionAsync(string dbFullPath)
         {
             FileSystemUtil.EnsureDir(Path.GetDirectoryName(dbFullPath));
@@ -83,6 +82,10 @@ namespace Blaczko.Core.Utils
             return db;
         }
 
+        /// <summary>
+        /// Use to open a connection to a SQLite database and execute a query.
+        /// The connection is automatically closed after the query is executed.
+        /// </summary>
         public static async Task<TResult> UsingDbAsync<TResult>(string dbPath, Func<SQLiteAsyncConnection, Task<TResult>> action)
         {
             var db = await CreateConnectionAsync(dbPath);
@@ -96,6 +99,7 @@ namespace Blaczko.Core.Utils
             }
         }
 
+        /// <inheritdoc cref="UsingDbAsync{TResult}(string, Func{SQLiteAsyncConnection, Task{TResult}})"/>
         public static async Task UsingDbAsync(string dbPath, Func<SQLiteAsyncConnection, Task> action)
         {
             var db = await CreateConnectionAsync(dbPath);
@@ -109,6 +113,5 @@ namespace Blaczko.Core.Utils
             }
         }
 
-        #endregion
     }
 }
