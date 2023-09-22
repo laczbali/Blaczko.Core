@@ -1,8 +1,8 @@
 Set-Location ..\
 
 # get latest dev package version
-$outputDir = ".\bin\Debug"
-$latestFile = Get-ChildItem -Path $outputDir -Filter "*dev*.nupkg" | Select-Object -Last 1
+$outputDir = "..\..\.nuget"
+$latestFile = Get-ChildItem -Path $outputDir -Filter "Blaczko.Core.*dev*.nupkg" | Select-Object -Last 1
 if ($null -ne $latestFile) {
     $devNumber = $latestFile.name -replace ".*dev(\d+).*", '$1'
     $devNumber = [int]$devNumber + 1
