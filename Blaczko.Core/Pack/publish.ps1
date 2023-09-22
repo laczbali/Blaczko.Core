@@ -1,5 +1,7 @@
+Set-Location ..\
+
 # read .env file
-Get-Content .env | foreach {
+Get-Content .\Pack\.env | ForEach-Object {
     $name, $value = $_.split('=')
     set-content env:\$name $value
 }
